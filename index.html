@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Namibia — Przewodnik Dzień po Dniu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<meta name="theme-color" content="#222B1D">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Namibia Plan">
+
+<style>
+:root{
+  --bg:#F7F1E3; --bg-card:#FFFDF7; --ink:#2B2118; --ink-soft:#5B5040;
+  --header:#222B1D; --header-2:#3E4F36;
+  --terracotta:#C1652F; --terracotta-deep:#9B4E22;
+  --gold:#D9A24B; --gold-deep:#B07E2F;
+  --sage:#6E7C59; --line:#E6DCC4; --line-deep:#D8CBA8;
+  --sky:#5B8AA6;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;padding-bottom:70px;}
+h1,h2,.serif{font-family:Georgia,"Iowan Old Style","Palatino Linotype",serif;}
+button{font-family:inherit;}
+
+/* ONBOARDING */
+#onboard{
+  position:fixed;inset:0;background:linear-gradient(160deg,var(--header-2),var(--header));
+  color:#F7F1E3;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:30px;z-index:100;text-align:center;min-height:100vh;
+}
+#onboard .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+#onboard h1{font-size:26px;margin:0 0 8px;}
+#onboard p{color:#CFD8C4;font-size:14px;max-width:320px;margin:0 0 26px;line-height:1.5;}
+#onboard button{
+  background:var(--terracotta);color:#fff;border:none;border-radius:10px;
+  padding:14px 28px;font-size:15px;font-weight:700;cursor:pointer;
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(160deg,var(--header-2),var(--header));color:#F7F1E3;
+  padding:16px 16px 14px;position:sticky;top:0;z-index:20;box-shadow:0 4px 14px rgba(0,0,0,0.18);
+}
+.hdr-top{display:flex;justify-content:space-between;align-items:baseline;}
+.eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9FBDB3;}
+.hdr-title{font-family:Georgia,serif;font-size:19px;color:#fff;margin-top:2px;}
+.hdr-link{font-size:11.5px;color:var(--gold);text-decoration:none;border:1px solid var(--gold);border-radius:999px;padding:5px 10px;white-space:nowrap;}
+
+/* TABS */
+.tabs{display:flex;gap:6px;padding:12px 14px 0;background:var(--bg);position:sticky;top:0;z-index:19;}
+.tab{flex:1;text-align:center;padding:10px 6px;border-radius:10px 10px 0 0;background:var(--bg-card);
+  border:1px solid var(--line-deep);border-bottom:none;color:var(--ink-soft);font-weight:700;font-size:12.5px;cursor:pointer;}
+.tab.active{background:var(--terracotta);color:#fff;border-color:var(--terracotta);}
+.panel{background:var(--bg-card);padding:14px;border:1px solid var(--line-deep);min-height:50vh;}
+
+/* OVERVIEW MAP */
+.map-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;margin-bottom:14px;}
+.map-wrap svg{width:100%;display:block;}
+.map-caption{font-size:11px;color:var(--ink-soft);text-align:center;margin-top:6px;}
+
+/* DAY LIST */
+.daylist-item{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:9px;cursor:pointer;}
+.daylist-item:active{background:#FBF6EA;}
+.dl-date{flex:none;width:54px;text-align:center;}
+.dl-date .num{font-family:Georgia,serif;font-weight:700;font-size:20px;color:var(--terracotta-deep);display:block;line-height:1;}
+.dl-date .mon{font-size:10px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;}
+.dl-mid{flex:1;min-width:0;}
+.dl-mid .ti{font-weight:700;font-size:14px;display:block;}
+.dl-mid .su{font-size:12px;color:var(--ink-soft);}
+.dl-icon{flex:none;font-size:22px;}
+.region-pill{display:inline-block;font-size:10px;background:var(--bg);border:1px solid var(--line-deep);border-radius:6px;padding:1px 7px;color:var(--ink-soft);margin-top:3px;}
+
+/* DAY DETAIL */
+#dayDetail{display:none;position:fixed;inset:0;background:var(--bg);z-index:50;overflow-y:auto;padding-bottom:40px;}
+#dayDetail.open{display:block;}
+.dd-header{background:linear-gradient(160deg,var(--header-2),var(--header));color:#fff;padding:16px;position:sticky;top:0;z-index:5;}
+.dd-back{background:rgba(255,255,255,0.12);border:none;color:#fff;border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;margin-bottom:10px;}
+.dd-eyebrow{font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;}
+.dd-title{font-family:Georgia,serif;font-size:22px;margin:4px 0 2px;}
+.dd-sub{font-size:13px;color:#CFD8C4;}
+.dd-nav{display:flex;justify-content:space-between;margin-top:12px;}
+.dd-nav button{background:rgba(255,255,255,0.12);border:none;color:#fff;border-radius:8px;padding:8px 12px;font-size:12.5px;cursor:pointer;}
+.dd-nav button:disabled{opacity:0.3;}
+
+.dd-body{padding:14px;}
+.dd-block{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;}
+.dd-block-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-deep);font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.dd-weather{display:flex;align-items:center;gap:12px;}
+.dd-weather .ic{font-size:34px;}
+.dd-weather .temp{font-family:Georgia,serif;font-size:18px;font-weight:700;}
+.dd-weather .desc{font-size:13px;color:var(--ink-soft);line-height:1.4;margin-top:2px;}
+
+.route-line{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;margin-bottom:6px;}
+.route-line .pt{color:var(--terracotta-deep);}
+.route-meta{display:flex;gap:14px;font-size:12px;color:var(--ink-soft);flex-wrap:wrap;}
+.route-meta b{color:var(--ink);}
+
+.sched-item{display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13.5px;}
+.sched-item:last-child{border-bottom:none;}
+.sched-time{flex:none;width:54px;font-weight:700;color:var(--terracotta-deep);font-family:Georgia,serif;font-size:13px;}
+.sched-text{flex:1;line-height:1.4;}
+
+.prep-list{margin:0;padding-left:0;list-style:none;}
+.prep-list li{display:flex;gap:8px;font-size:13.5px;line-height:1.4;margin-bottom:8px;}
+.prep-list li:before{content:"☐";color:var(--sage);flex:none;}
+
+.guide-entry{margin-bottom:14px;}
+.guide-entry:last-child{margin-bottom:0;}
+.guide-entry h4{font-size:14px;margin:0 0 5px;color:var(--terracotta-deep);font-family:Georgia,serif;}
+.guide-entry p{font-size:13.5px;line-height:1.55;margin:0;color:var(--ink);}
+
+.animal-chip-row{display:flex;flex-direction:column;gap:8px;}
+.animal-chip{display:flex;gap:10px;align-items:flex-start;background:var(--bg);border-radius:10px;padding:9px 11px;}
+.animal-chip .paw{font-size:16px;flex:none;}
+.animal-chip .an-name{font-weight:700;font-size:13.5px;display:block;}
+.animal-chip .an-note{font-size:12px;color:var(--ink-soft);line-height:1.35;}
+.animal-cta{display:block;text-align:center;margin-top:10px;background:var(--sage);color:#fff;text-decoration:none;
+  border-radius:9px;padding:10px;font-size:13px;font-weight:700;}
+
+.mini-map-wrap{background:var(--bg);border-radius:10px;padding:8px;margin-top:10px;}
+.mini-map-wrap svg{width:100%;display:block;}
+
+/* APP LINK CARD */
+.applink-card{background:linear-gradient(135deg,var(--sage),#566144);color:#fff;border-radius:14px;padding:16px;margin-bottom:14px;display:flex;gap:12px;align-items:center;}
+.applink-card .ic{font-size:30px;flex:none;}
+.applink-card .tx{flex:1;font-size:12.5px;line-height:1.4;}
+.applink-card .tx b{display:block;font-size:14px;margin-bottom:2px;font-family:Georgia,serif;}
+.applink-card a{color:var(--gold);font-weight:700;text-decoration:underline;}
+
+/* INFO TAB */
+.info-section{margin-bottom:16px;}
+.info-section h3{font-size:14px;color:var(--terracotta-deep);font-family:Georgia,serif;border-bottom:2px solid var(--terracotta);padding-bottom:4px;margin-bottom:8px;}
+.info-section ul{margin:0;padding-left:18px;}
+.info-section li{font-size:13.5px;line-height:1.5;margin-bottom:5px;}
+.info-section p{font-size:13.5px;line-height:1.5;margin:0 0 8px;}
+
+.search-box{display:flex;gap:8px;margin-bottom:12px;}
+.search-box input{flex:1;padding:9px 12px;border:1px solid var(--line-deep);border-radius:9px;font-size:14px;}
+
+/* FOOD TAB */
+.food-chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px;padding-bottom:2px;}
+.food-chip{flex:none;padding:7px 13px;border-radius:999px;background:#fff;border:1px solid var(--line-deep);
+  font-size:12.5px;color:var(--ink-soft);cursor:pointer;white-space:nowrap;font-weight:600;}
+.food-chip.active{background:var(--terracotta);color:#fff;border-color:var(--terracotta);}
+.food-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;}
+.food-card-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.food-card-title{font-family:Georgia,serif;font-size:15.5px;font-weight:700;color:var(--terracotta-deep);}
+.food-card-time{font-size:11.5px;color:var(--ink-soft);background:var(--bg);border-radius:6px;padding:2px 8px;white-space:nowrap;}
+.food-card p{font-size:13.5px;line-height:1.5;margin:6px 0;}
+.food-card ul{margin:6px 0;padding-left:18px;}
+.food-card li{font-size:13.5px;line-height:1.5;margin-bottom:4px;}
+.food-card b{color:var(--ink);}
+.food-tip{background:#F1ECDB;border-radius:10px;padding:11px 13px;font-size:13px;line-height:1.5;margin-bottom:10px;display:flex;gap:8px;}
+.food-tip .ic{flex:none;}
+</style>
+</head>
+<body>
+
+<div id="onboard">
+  <div class="eyebrow">Wirtualny przewodnik</div>
+  <h1>Namibia<br>dzień po dniu</h1>
+  <p>Offline plan podróży — trasa, atrakcje, ubiór, pogoda i zwierzęta do zobaczenia każdego dnia. Twój prywatny przewodnik na miejscu.</p>
+  <button onclick="closeOnboard()">Zaczynamy →</button>
+</div>
+
+<header>
+  <div class="hdr-top">
+    <div>
+      <div class="eyebrow">25 cze – 9 lip 2026</div>
+      <div class="hdr-title">Namibia · Plan podróży</div>
+    </div>
+    <a class="hdr-link" href="#" id="animalAppLink" target="_blank">🦁 Album zwierząt</a>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" data-tab="trasa" onclick="switchTab('trasa')">Trasa</div>
+  <div class="tab" data-tab="jedzenie" onclick="switchTab('jedzenie')">Jedzenie</div>
+  <div class="tab" data-tab="info" onclick="switchTab('info')">Info ogólne</div>
+</div>
+
+<div class="panel" id="panel-trasa">
+  <div class="map-wrap" id="overviewMapWrap"></div>
+  <div class="search-box">
+    <input type="text" id="daySearch" placeholder="Szukaj: miejsce, atrakcja, zwierzę…" oninput="renderDayList()">
+  </div>
+  <div id="dayListWrap"></div>
+</div>
+
+<div class="panel" id="panel-jedzenie" style="display:none;"></div>
+
+<div class="panel" id="panel-info" style="display:none;"></div>
+
+<div id="dayDetail"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
