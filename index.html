@@ -44,7 +44,7 @@ button{font-family:inherit;}
 /* HEADER */
 header{
   background:linear-gradient(160deg,var(--header-2),var(--header));color:#F7F1E3;
-  padding:16px 16px 14px;position:sticky;top:0;z-index:20;box-shadow:0 4px 14px rgba(0,0,0,0.18);
+  padding:calc(16px + env(safe-area-inset-top)) 16px 14px;position:sticky;top:0;z-index:20;box-shadow:0 4px 14px rgba(0,0,0,0.18);
 }
 .hdr-top{display:flex;justify-content:space-between;align-items:baseline;}
 .eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#9FBDB3;}
@@ -78,7 +78,7 @@ header{
 /* DAY DETAIL */
 #dayDetail{display:none;position:fixed;inset:0;background:var(--bg);z-index:50;overflow-y:auto;padding-bottom:40px;}
 #dayDetail.open{display:block;}
-.dd-header{background:linear-gradient(160deg,var(--header-2),var(--header));color:#fff;padding:16px;position:sticky;top:0;z-index:5;}
+.dd-header{background:linear-gradient(160deg,var(--header-2),var(--header));color:#fff;padding:calc(16px + env(safe-area-inset-top)) 16px 16px;position:sticky;top:0;z-index:5;}
 .dd-back{background:rgba(255,255,255,0.12);border:none;color:#fff;border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;margin-bottom:10px;}
 .dd-eyebrow{font-size:11px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;}
 .dd-title{font-family:Georgia,serif;font-size:22px;margin:4px 0 2px;}
